@@ -20,8 +20,8 @@ Guttag then references the classic example of a coin flip to illustrate the idea
 
 Anyway, it's as simple as it gets: the more you flip the coin, the more the sample population tends to show that the coin flip has 50/50 odds.
 
-> **Confidence in our estimate depends on two things:**
->
+### Confidence in our estimate depends on two things:
+
 > - Size of the sample
 > - Variance of the sample
 > - As the variance grows, we need larger samples to have the same degree of confidence
@@ -32,21 +32,21 @@ Again, all very simple and familiar concepts. No need for further elaboration.
 
 This example allows us to compare simulation results to actual probabilities. Taleb likes Russian Roulette more in the context of investors taking extreme losses, but the idea remains the same.
 
-Thankfully, this course is taught with Python. Unfortunately, it looks like I'm finally going to have to actually learn classes, rather than just understand the basic idea.
+Thankfully, this course is taught in Python. Unfortunately, it looks like I'm finally going to have to actually learn classes, rather than just understand the basic idea.
 
 ### Python Classes
 
-- When you create a class, you're creating a blueprint for objects. Each object needs
-  its own separate copy of the data. That's what self helps with.
+> - When you create a class, you're creating a blueprint for objects. Each object needs
+>   its own separate copy of the data. That's what "self" helps with.
+> - In other words, "self" is simply a reference to "this specific object instance"
+>   It's the way Python lets an object access its own data and methods.
+> - In summary, classes are used to calculate different data using the same calculations in a compartmentalized manner.
 
-- In other words, self is simply a reference to "this specific object instance"
-  It's the way Python lets an object access its own data and methods.
-
-- In summary, classes are used to calculate different data using the same calculations.
-
-**Here's Guttag's roulette simulation with elementary level notes for my own understanding:**
+### Guttag's Python roulette simulation with elementary level notes for my own understanding:
 
 ```python
+import random
+
 class FairRoulette(): # This is the blueprint for our roulette game
 
     def __init__(self): # This runs when we create a new roulette game
@@ -54,17 +54,24 @@ class FairRoulette(): # This is the blueprint for our roulette game
         for i in range(1,37):
             self.pockets.append(i)
         self.ball = None
-        self.pocketOdds = len(seld.pockets) - 1 # How much we pay out if someone wins
+        self.pocketOdds = len(self.pockets) - 1 # How much we pay out if someone wins
 
     def spin(self):
         self.ball = random.choice(self.pockets)
 
-    def betPocket(seld, pocket, amt):
+    def betPocket(self, pocket, amt):
         if str(pocket) == str(self.ball):
-            return amt*seld.pocketOdds # Player wins
+            return amt*self.pocketOdds # Player wins
         else:
             return - amt # Player loses
 
     def __str__(self): # How our roulette wheel describes itself
         return 'Fair Roulette'
+
+# Now we create an instance of the game
+wheel = FairRoulette()
+wheel.spin()
+result = wheel.betPocket(7,10) # Bet $10 on pocket 7
+
+print(result) # Then be reminded why I don't gamble
 ```
