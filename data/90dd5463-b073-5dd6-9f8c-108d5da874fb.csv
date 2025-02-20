@@ -1,0 +1,47 @@
+"Activity Date","Process Date","Settle Date","Instrument","Description","Trans Code","Quantity","Price","Amount"
+"5/7/2024","5/7/2024","5/9/2024","PANW","Palo Alto Networks
+CUSIP: 697435105","Sell","0.00327","$305.36","$1.00"
+"5/7/2024","5/7/2024","5/9/2024","PANW","Palo Alto Networks
+CUSIP: 697435105","Sell","0.00326","$306.52","$1.00"
+"5/7/2024","5/7/2024","5/9/2024","SBLK","Star Bulk
+CUSIP: Y8162K204","Sell","0.0384","$26.04","$1.00"
+"5/7/2024","5/7/2024","5/9/2024","PANW","Palo Alto Networks
+CUSIP: 697435105","Sell","0.00326","$306.38","$1.00"
+"5/7/2024","5/7/2024","5/9/2024","FMC","FMC
+CUSIP: 302491303","Sell","0.016194","$61.75","$1.00"
+"4/29/2024","4/29/2024","5/1/2024","FMC","FMC
+CUSIP: 302491303","Buy","0.067063","$59.64","($4.00)"
+"4/26/2024","4/26/2024","4/30/2024","ALTM","Arcadium Lithium
+CUSIP: G0508H110","Sell","0.251572","$3.97","$1.00"
+"4/15/2024","4/15/2024","4/17/2024","RTX","RTX Corporation
+CUSIP: 75513E101","Buy","0.059766","$100.39","($6.00)"
+"4/10/2024","4/10/2024","4/12/2024","ALTM","Arcadium Lithium
+CUSIP: G0508H110","Buy","0.231213","$4.32","($1.00)"
+"4/1/2024","4/1/2024","4/3/2024","ALTM","Arcadium Lithium
+CUSIP: G0508H110","Buy","0.222717","$4.49","($1.00)"
+"3/28/2024","3/28/2024","3/28/2024","","Interest Payment","INT","","","$0.01"
+"3/20/2024","3/20/2024","3/22/2024","SBLK","Star Bulk
+CUSIP: Y8162K204","Buy","0.042707","$23.42","($1.00)"
+"3/19/2024","3/19/2024","3/21/2024","SBLK","Star Bulk
+CUSIP: Y8162K204","Buy","0.042562","$23.50","($1.00)"
+"3/19/2024","3/19/2024","3/21/2024","SBLK","Star Bulk
+CUSIP: Y8162K204","Buy","0.042292","$23.64","($1.00)"
+"3/19/2024","3/19/2024","3/21/2024","SBLK","Star Bulk
+CUSIP: Y8162K204","Buy","0.08309","$24.09","($2.00)"
+"3/15/2024","3/15/2024","3/19/2024","PANW","Palo Alto Networks
+CUSIP: 697435105","Buy","0.003537","$282.66","($1.00)"
+"3/15/2024","3/15/2024","3/19/2024","SBLK","Star Bulk
+CUSIP: Y8162K204","Buy","0.084763","$23.60","($2.00)"
+"3/8/2024","3/8/2024","3/12/2024","PANW","Palo Alto Networks
+CUSIP: 697435105","Buy","0.003551","$281.61","($1.00)"
+"3/7/2024","3/7/2024","3/11/2024","PANW","Palo Alto Networks
+CUSIP: 697435105","Buy","0.003567","$280.00","($1.00)"
+"3/6/2024","3/6/2024","3/8/2024","PANW","Palo Alto Networks
+CUSIP: 697435105","Buy","0.007061","$283.22","($2.00)"
+"3/5/2024","3/5/2024","3/7/2024","PANW","Palo Alto Networks
+CUSIP: 697435105","Buy","0.007013","$285.15","($2.00)"
+"3/5/2024","3/5/2024","3/7/2024","PANW","Palo Alto Networks
+CUSIP: 697435105","Buy","0.006765","$295.89","($2.00)"
+"2/29/2024","2/29/2024","2/29/2024","","Interest Payment","INT","","","$0.03"
+""
+"","","","","","","","","","The data provided is for informational purposes only. Please consult a professional tax service or personal tax advisor if you need instructions on how to calculate cost basis or questions regarding your specific tax situation. Reminder: This data does not include Robinhood Crypto or Robinhood Spending activity."
