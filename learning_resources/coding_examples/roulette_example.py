@@ -41,6 +41,6 @@ def playRoulette(game, numSpins, pocket, bet, toPrint):
 # Finally, run the simulation   
 random.seed(0)
 game = FairRoulette()
-for numSpins in (100, 1000000):
+for numSpins in (100, 1000000): # We're testing what happens when you spin 100 times vs. 1000000 times
     for i in range(3):
         playRoulette(game, numSpins, 2, 1, True)

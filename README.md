@@ -94,9 +94,46 @@ def playRoulette(game, numSpins, pocket, bet, toPrint):
 # Finally, run the simulation
 random.seed(0)
 game = FairRoulette()
-for numSpins in (100, 1000000):
+for numSpins in (100, 1000000): # We're testing what happens when you spin 100 times vs. 1000000 times
     for i in range(3):
         playRoulette(game, numSpins, 2, 1, True)
 ```
 
-### What We Learned
+### Roulette Simulation Results and What We Learned
+
+Here are the results of the simulation:
+
+```terminal
+100 spins of Fair Roulette
+Expected return betting 2 = -100.0%
+
+100 spins of Fair Roulette
+Expected return betting 2 = 44.0%
+
+100 spins of Fair Roulette
+Expected return betting 2 = -28.0%
+
+1000000 spins of Fair Roulette
+Expected return betting 2 = -0.046%
+
+1000000 spins of Fair Roulette
+Expected return betting 2 = 0.602%
+
+1000000 spins of Fair Roulette
+Expected return betting 2 = 0.7964%
+```
+
+And here's what we learned:
+
+- For 100 spins, the return is **highly variable**
+- However, for 1,000,000 spins, there is much less variance. Still not 0, but evidently closer to 0, and notably the results are closer together (less variance).
+- The more you spin (the larger the population), the less the variance. The casino, of course, likes the odds of the larger sample size.
+- The more spins we do, the closer to 0 we get, and the less variance there is.
+
+This is that good old concept of the **Law of Large Numbers**
+
+### The Law of Large Numbers
+
+In repeated independent tests with the same actual probability _p_ of a particular outcome in each test, the chance that the fraction of times that outcome occurs differs from _p_ converges to 0 as the number of trials goes to infinity.
+
+Again, another pretty simple and well known concept, but the roulette code was fun to follow along with. It's also time to grow up and start using OOP a lot more. This will greatly improve your code.
