@@ -1,4 +1,4 @@
-# The Purpose of This README.md File
+# The Purpose of This README.md
 
 This README.md file is mostly for personal notes I can refer to while discovering how a Monte Carlo simulation works. It's more of a lesson log to hammer in what I've learned rather than being purely a guide for running this code. Big thanks to the book "Fooled by Randomness", by Nassim Nicholas Taleb, for inspiring this super interesting project. There are so many valuable concepts in this book that I feel this is the best way to fully digest them. I also might be stealing his rhetoric here and there, so I apologize if I occasionally sound pretentious.
 
@@ -154,7 +154,9 @@ Following the Gambler's Fallacy, Guttag makes an important distinction concernin
 
 "If somebody's parents are both taller than average, it's likely that the child will be shorter than the parents."
 
-The same logic applies invesely. Essentially, when following an extreme event, the next random event is likely to be less extreme (I wonder what Taleb thinks of this). I'll avoid indulging in this idea too much, as this concept becomes foggy and unreliable without a given timeframe (long term vs. short term, and what the distinction between the two even really is). I now realize that the time series of my data and what I compare it to is going to be very tricky (and probably somewhat arbitrary) to implement. Moreoever, genetic inherence doesn't really involve the consideration of time in this example. Let's avoid more confusion and continue with Guttag and the roulette example.
+The same logic applies invesely. Essentially, when following an extreme event, the next random event is likely to be less extreme (I wonder what Taleb thinks of this). I'll avoid indulging in this idea too much, as this concept becomes foggy and unreliable without a given timeframe (long term vs. short term, and what the distinction between the two even really is). It's also important to keep in mind that, as Taleb said, **there is a big difference between a game and the real world**. This is also why he said he doesn't like competitive people. A competitve mindset treats the market like a game rather than the convoluted and random mess that it really is. This also might imply that the time series of my data and what I compare it to is going to be very tricky (and probably somewhat arbitrary) to implement. Moreoever, genetic inherence doesn't really involve the consideration of time in this example.
+
+I will need to revisit this later when the project's parameters are more clear. Let's avoid more confusion and continue with Guttag and the roulette example.
 
 ### Roulette - Regression to the Mean
 
@@ -166,4 +168,4 @@ Regression to the Mean says that its likely that in the next 10 spins, you will 
 
 So, if you look at the average of the 20 spins, it will be closer to the expected mean of 50% reds than to the 100% of the first 10 spins. This is reillustrating the concept from earlier, where if you spin the roulette wheel a million times the reward converges to $0.
 
-**The more samples you take, the more likely you will regress to the mean**. The result isn't _evening out_, it is _regressing_ towards the statistically expected result.
+**The more samples you take, the more likely you will regress to the mean**. The result isn't _evening out_, it is _regressing_ towards the statistically expected result. However, let's not marry ourselves to this idea before our understanding is fully grounded. Roulette is a game where the rules stay the same. The market is not and has way less static probabilities. People have lost their fortune on events they deemed far less likely than getting 10 reds in a row. Taleb hates it when people omit outliers for a reason.
