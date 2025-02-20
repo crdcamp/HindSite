@@ -1,6 +1,10 @@
-# The Preliminary Purpose of This README.md File
+# The Purpose of This README.md File
 
-As of now, this README.md file is for personal notes I can refer to while discovering how a Monte Carlo simulation works. Big thanks to the book "Fooled by Randomness", by Nassim Nicholas Taleb, for inspiring this super interesting project.
+This README.md file is mostly for personal notes I can refer to while discovering how a Monte Carlo simulation works. It's more of a lesson log to hammer in what I've learned rather than being purely a guide for running this code. Big thanks to the book "Fooled by Randomness", by Nassim Nicholas Taleb, for inspiring this super interesting project. There are so many valuable concepts in this book that I feel this is the best way to fully digest them. I also might be stealing his rhetoric here and there, so I apologize if I occasionally sound pretentious.
+
+# The Purpose of This Project
+
+HindSite is meant to give me new insights into my Robinhood account and the trades I've made using a Monte Carlo simulation. I started this project in February of 2025, which has been a very uncertain time for U.S. markets. This uncertainty, in combination with Taleb's "Fooled by Randomness", has made me worry about the resilliance of my portfolio and my understanding of risk. I've taken a very organic approach to investing so far, and my intuition seems to be working for now. However, I've finally decided to blend some statistics into the mix, as I believe the best and most sustainable way to invest is through organic thought mixed with statistical analysis.
 
 # An Introduction To The Monte Carlo Simulation
 
@@ -28,7 +32,7 @@ Anyway, it's as simple as it gets: the more you flip the coin, the more the samp
 
 Again, all very simple and familiar concepts. No need for further elaboration.
 
-## Roulette
+## Roulette and OOP
 
 This example allows us to compare simulation results to actual probabilities. Taleb likes Russian Roulette more in the context of investors taking extreme losses, but the idea remains the same.
 
@@ -130,10 +134,36 @@ And here's what we learned:
 - The more you spin (the larger the population), the less the variance. The casino, of course, likes the odds of the larger sample size.
 - The more spins we do, the closer to 0 we get, and the less variance there is.
 
-This is that good old concept of the **Law of Large Numbers**
+This is that good old concept of the **Law of Large Numbers**. While this still isn't any sort of breakthrough or epiphany, it does strongly tie into Taleb's points.
 
 ### The Law of Large Numbers
 
-In repeated independent tests with the same actual probability _p_ of a particular outcome in each test, the chance that the fraction of times that outcome occurs differs from _p_ converges to 0 as the number of trials goes to infinity.
+"In repeated independent tests with the same actual probability _p_ of a particular outcome in each test, the chance that the fraction of times that outcome occurs differs from _p_ converges to 0 as the number of trials goes to infinity."
 
-Again, another pretty simple and well known concept, but the roulette code was fun to follow along with. It's also time to grow up and start using OOP a lot more. This will greatly improve your code.
+Again, another pretty simple and well known concept, but the roulette code was fun to follow along with anyway. It's also time to grow up and start using OOP a lot more. This will greatly improve my code.
+
+### The Gambler's Fallacy and it's Ties to Taleb
+
+The lecture I've been referencing also brings up some notable points that remind me of Taleb's book. As Professor Guttag put it, "People somehow believe that if deviations from the expectation occur, they'll be evened out in the future. This is simply not true." Taleb displayed this with stories of investors "blowing up" over foreign currencies in the 90s. The one guy in particular (I forget what Taleb called him) would keep dollar cost averaging into the Ruple thinking that, eventually, his previously successful strategy would show results again. He was so caught up in the affirmations of his circle of economists that he ran into a statistical certainty of failure (I'm not sure if Taleb would frown at the "statistical certainty" part of that conclusion, but the idea remains the same still). Never marry yourself to an asset, or (more importantly for the application of this project) a trading strategy. **No economic regime is permanent.**
+
+In the end, this particular investor was "lucky" in the sense that he was **randomly** in the right place at the right time. This is why his strategy worked so well, that is, until he "blew up". If you play Russian roulette enough times, no matter how many chambers the revolver may have, you will eventually lose. This is why we're learning about the Monte Carlo simulation. We must be aware of all possible outcomes, not blinded by the strategy that currently works.
+
+### A Common Confusion - The Gambler's Fallacy vs. Regression to the Mean
+
+Following the Gambler's Fallacy, Guttag makes an important distinction concerning Regression to the Mean:
+
+"If somebody's parents are both taller than average, it's likely that the child will be shorter than the parents."
+
+The same logic applies invesely. Essentially, when following an extreme event, the next random event is likely to be less extreme (I wonder what Taleb thinks of this). I'll avoid indulging in this idea too much, as this concept becomes foggy and unreliable without a given timeframe (long term vs. short term, and what the distinction between the two even really is). I now realize that the time series of my data and what I compare it to is going to be very tricky (and probably somewhat arbitrary) to implement. Moreoever, genetic inherence doesn't really involve the consideration of time in this example. Let's avoid more confusion and continue with Guttag and the roulette example.
+
+### Roulette - Regression to the Mean
+
+Again, following an extreme random event, the next random event is likely to be less extreme. If you spin a fair roulette wheel 10 times and get 100% reds, that is an extreme event (1 in 1024 chance).
+
+The Gambler's Fallacy says that if you spin another 10 times it should "even out". You should get less than 10 blacks to make up for the reds.
+
+Regression to the Mean says that its likely that in the next 10 spins, you will get around 5 reds (a less extreme random event). The statistically expected number of reds is around 5, while the Gambler's Fallacy expects less than 10.
+
+So, if you look at the average of the 20 spins, it will be closer to the expected mean of 50% reds than to the 100% of the first 10 spins. This is reillustrating the concept from earlier, where if you spin the roulette wheel a million times the reward converges to $0.
+
+**The more samples you take, the more likely you will regress to the mean**. The result isn't _evening out_, it is _regressing_ towards the statistically expected result.
