@@ -169,3 +169,37 @@ Regression to the Mean says that its likely that in the next 10 spins, you will 
 So, if you look at the average of the 20 spins, it will be closer to the expected mean of 50% reds than to the 100% of the first 10 spins. This is reillustrating the concept from earlier, where if you spin the roulette wheel a million times the reward converges to $0.
 
 **The more samples you take, the more likely you will regress to the mean**. The result isn't _evening out_, it is _regressing_ towards the statistically expected result. However, let's not marry ourselves to this idea before our understanding is fully grounded. Roulette is a game where the rules stay the same. The market is not and has way less static probabilities. People have lost their fortune on events they deemed far less likely than getting 10 reds in a row. Taleb hates it when people omit outliers for a reason.
+
+# Starting Simple - First Test of Simulation
+
+Now it's time to see what we can do with a simple test. Thanks to [this video](https://www.youtube.com/watch?v=6-dhdMDiYWQ&t=9s) by QuantPy, we have a good place to start. We begin by simply finding the mean returns of some Austrailian stocks.
+
+```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import datetime as dt
+import yfinance as yf  # Replace pandas_datareader with yfinance
+
+# Followed along with code from https://www.youtube.com/watch?v=6-dhdMDiYWQ&t=9s
+
+# Import stock data
+def get_data(stocks, start_date, end_date):
+    stockData = yf.download(stocks, start=start_date, end=end_date)['Close']  # Use yfinance's download method
+    returns = stockData.pct_change()
+    meanReturns = returns.mean()
+    covMatrix = returns.cov()
+    return meanReturns, covMatrix
+
+# Create stock list
+stockList = ['CBA', 'BHP', 'TLS', 'NAB', 'WBC', 'STO']
+stocks = [stock + '.AX' for stock in stockList]  # Add .AX for Australian stocks. This will be changed later
+end_date = dt.datetime.now()
+start_date = end_date - dt.timedelta(days=300)
+
+# Quick test
+meanReturns, covMatrix = get_data(stocks, start_date, end_date)
+
+print(meanReturns)
+```
+
