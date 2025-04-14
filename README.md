@@ -170,9 +170,11 @@ So, if you look at the average of the 20 spins, it will be closer to the expecte
 
 **The more samples you take, the more likely you will regress to the mean**. The result isn't _evening out_, it is _regressing_ towards the statistically expected result. However, let's not marry ourselves to this idea before our understanding is fully grounded. Roulette is a game where the rules stay the same. The market is not and has way less static probabilities. People have lost their fortune on events they deemed far less likely than getting 10 reds in a row. Taleb hates it when people omit outliers for a reason.
 
-# Starting Simple - First Test of Simulation
+# Starting Simple - First Test of the Simulation
 
 Now it's time to see what we can do with a simple test. Thanks to [this video](https://www.youtube.com/watch?v=6-dhdMDiYWQ&t=9s) by QuantPy, we have a good place to start. We begin by simply finding the mean returns of some Austrailian stocks.
+
+## Finding Stock Mean Returns
 
 ```python
 import pandas as pd
@@ -203,3 +205,13 @@ meanReturns, covMatrix = get_data(stocks, start_date, end_date)
 print(meanReturns)
 ```
 
+## Define weights for the portfolio
+Now we define the weights. In this case, we're just gonna use random numbers for these values to keep the simplicity.
+```python
+weights = np.random.random(len(meanReturns)) # We'll randonly generate weights for now (ranges from 0 to 1)
+weights /= np.sum(weights) # Normalize the weights to sum to 1 by dividing them by the sum of the weights
+
+print(f'Weights: {weights}') # Testing the weights
+```
+
+Now we can actually begin messing around with the Monte Carlo Simulation.

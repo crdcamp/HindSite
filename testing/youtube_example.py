@@ -23,4 +23,17 @@ start_date = end_date - dt.timedelta(days=300)
 # Quick test
 meanReturns, covMatrix = get_data(stocks, start_date, end_date)
 
-print(meanReturns)
+print(f'Mean Returns: {meanReturns}')
+
+
+# Define weights for the portfolio
+weights = np.random.random(len(meanReturns)) # We'll randonly generate weights for now (ranges from 0 to 1)
+weights /= np.sum(weights) # Normalize the weights to sum to 1 by dividing them by the sum of the weights
+
+print(f'Weights: {weights}') # Testing the weights
+
+# Now we can dive into the Monte Carlo simulation
+
+# Monte Carlo Method
+mc_sims = 100 # Number of simulations
+T = 100 # Timeframe in days
