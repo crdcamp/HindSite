@@ -45,10 +45,14 @@ for m in range(0, mc_sims):
     # MC loops
     # We use the Cholesky decomposition to determine the Lower Triangular matrix
     # He mentions "normal distribution" in relation to this. I dont think Taleb would approve, BUT we're keeping it simple for now
-    Z =- np.random.normal(size=(T, len(weights))) # Generate a random normal distribution
+    Z = np.random.normal(size=(T, len(weights))) # Generate a random normal distribution
     L =  np.linalg.cholesky(covMatrix) # Cholesky decomposition. This finds the value for that "lower triangle"
     dailyReturns = meanM + np.inner(L, Z) # Inner product of the mean matrix and the lower triangle
     portfolio_sims[:, m] = np.cumprod(np.inner(weights, dailyReturns.T)+1) * initialPortfolioValue # Cumulative product of the daily returns and the initial portfolio value
+
+    # Testing Section: Determine if the Cholesky decomposition can be written as the product of the lower triangular matrix and its transpose
+    L_LT_product= np.matmul(L, L.T) # Product of L and its transpose
+    is_valid_decomposition = np.allclose(L_LT_product, covMatrix) # Check if the product is equal to the covariance matrix
 
 # plt.plot(portfolio_sims)
 # plt.ylabel('Portfolio Value ($)')
@@ -56,4 +60,6 @@ for m in range(0, mc_sims):
 # plt.title('Monte Carlo Simulation of Portfolio Value')
 # plt.show()
 
-print(L) # Display Cholesky Decomposition matrix for note taking
+print(f'Cholesky Decompostition: {L}\n') # Display Cholesky Decomposition matrix for note taking
+print(f'Product of Cholesky Decomposition and its Transpose: {L_LT_product}') # Display product of L and its transpose for note taking
+print(f'Is the Cholesky Decomposition valid? {is_valid_decomposition}') # Result = True

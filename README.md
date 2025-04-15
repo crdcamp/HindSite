@@ -281,7 +281,7 @@ I'm a firm believer in Taleb's take on this. While I try to not blindly agree wi
 
 Before I get too deep into this preconcieved bias, let's do some research into the Cholesky Decompostion and make some educated conclusions.
 
-### Cholesky Decomposition - The Math Behind It
+### Cholesky Decomposition - The Concepts Behind It
 
 We'll start with [this resource](https://www.statlect.com/matrix-algebra/Cholesky-decomposition) to get an idea of what's happening here.
 
@@ -290,9 +290,9 @@ We'll start with [this resource](https://www.statlect.com/matrix-algebra/Cholesk
 Let's start with the completeley unfamiliar part; the **triangular matrix**.
 
 #### Triangular Matrices
-To begin with, a square matrix is a matrix that has an equal number of rows and columns. As for triangular matrices...
+To begin with, a square matrix is a matrix that has an equal number of rows and columns. Super simple stuff.
 
-Accoring to [CueMath](https://www.cuemath.com/algebra/triangular-matrix/):
+Meanwhile, accoring to [CueMath](https://www.cuemath.com/algebra/triangular-matrix/):
 
 "A triangular matrix is a special kind of square matrix in the set of matrices. There are two types of triangular matrices: lower triangular matrix and upper triangular matrix."
 * "A square matrix is said to be a lower triangular matrix if all the elements above its main diagonal are zero."
@@ -328,10 +328,10 @@ While I don't have an understanding of the math behind this, the concept of gene
 
 Let's move on to how the Cholesky Decomposition works. Then we can have a better understanding of how to replace it.
 
-#### Understanding a Cholesky Decomposition
+#### Verifying PyQuant's Cholesky Decomposition
 To reiterate from the [Cholesky Decomposition source](https://www.statlect.com/matrix-algebra/Cholesky-decomposition): 
 
-"A square matrix is said to have a Cholesky decomposition if it can be written as the product of a lower triangular matrix and its transpose (conjugate transpose in the complex case); the lower triangular matrix is required to have strictly positive real entries on its main diagonal."
+"A square matrix is said to have a Cholesky decomposition if it can be written as the **product of a lower triangular matrix and its transpose** (conjugate transpose in the complex case); the **lower triangular matrix is required to have strictly positive real entries on its main diagonal**."
 
 This definition makes more sense now. Let's also revisit the example from earlier.
 
@@ -345,4 +345,26 @@ This definition makes more sense now. Let's also revisit the example from earlie
  [ 0.00347986  0.00973975  0.00349588  0.00047145  0.00093471  0.00686941]]
 ```
 
-The [main diagonal](https://www.sciencedirect.com/topics/mathematics/diagonal-of-a-matrix#:~:text=The%20main%20diagonal%20of%20a,element%20to%20the%20lower%20right.) of a matrix refers to the elements where the row and column numbers are the same.
+The [main diagonal](https://www.sciencedirect.com/topics/mathematics/diagonal-of-a-matrix#:~:text=The%20main%20diagonal%20of%20a,element%20to%20the%20lower%20right.) of a matrix refers to the elements where the row and column numbers are the same. Given this definition, You can easily see that the lower triangular matrix has only positive real entries on its main diagonal.
+
+As for the "product of a lower triangular matrix and its transpose", we will do some more testing. I've changed the bottom code in quantpy_youtube_example_testing to this.
+
+```python
+for m in range(0, mc_sims):
+    # MC loops
+    # We use the Cholesky decomposition to determine the Lower Triangular matrix
+    # He mentions "normal distribution" in relation to this. I dont think Taleb would approve, BUT we're keeping it simple for now
+    Z = np.random.normal(size=(T, len(weights))) # Generate a random normal distribution
+    L =  np.linalg.cholesky(covMatrix) # Cholesky decomposition. This finds the value for that "lower triangle"
+    dailyReturns = meanM + np.inner(L, Z) # Inner product of the mean matrix and the lower triangle
+    portfolio_sims[:, m] = np.cumprod(np.inner(weights, dailyReturns.T)+1) * initialPortfolioValue # Cumulative product of the daily returns and the initial portfolio value
+
+    # Testing Section: Determine if the Cholesky decomposition can be written as the product of the lower triangular matrix and its transpose
+    L_LT_product= np.matmul(L, L.T) # Product of L and its transpose
+    is_valid_decomposition = np.allclose(L_LT_product, covMatrix) # Check if the product is equal to the covariance matrix
+```
+This checks to see if the original covariance matrix equals the product of the Cholesky Decomposition and its transpose. The result returned a lovely ```True``` statement. As far as I can tell, the YouTube example was done correctly. Now let's understand the whole point of a Cholesky Decomposition so we can explore alternatives.
+
+#### Understanding The Cholesky Decomposition
+
+
