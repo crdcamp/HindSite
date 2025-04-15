@@ -166,7 +166,7 @@ Regression to the Mean says that its likely that in the next 10 spins, you will 
 
 So, if you look at the average of the 20 spins, it will be closer to the expected mean of 50% reds than to the 100% of the first 10 spins. This is reillustrating the concept from earlier, where if you spin the roulette wheel a million times the reward converges to $0.
 
-**The more samples you take, the more likely you will regress to the mean**. The result isn't _evening out_, it is _regressing_ towards the statistically expected result. However, let's not marry ourselves to this idea before our understanding is fully grounded. Roulette is a game where the rules stay the same. The market is not and has way less static probabilities. People have lost their fortune on events they deemed far less likely than getting 10 reds in a row. Taleb hates it when people omit outliers for a reason.
+**The more samples you take, the more likely you will regress to the mean**. The result isn't _evening out_, it is _regressing_ towards the statistically expected result. However, let's not marry ourselves to this idea before our understanding is fully grounded. Roulette is a game where the rules stay the same. The market is not and has way less static probabilities. People have lost their fortune on events they deemed far less likely than getting 10 reds in a row. Taleb hates it when people omit outliers for a reason. He also hates it when people act like a game with set rules provides any resemblance to reality!
 
 # Starting Simple - First Monte Carlo Test
 
@@ -279,7 +279,7 @@ I couldn't help but notice that the ```Z``` variable uses a normal distribution.
 
 I'm a firm believer in Taleb's take on this. While I try to not blindly agree with everything he says, he is almost certainly correct about this central point in his book "The Black Swan". In the context of market/risk assessment, the normal distribution must die!
 
-Before I get too deep into this preconcieved bias, let's do some research into the Cholesky Decompostion and make some educated conclusions.
+Before I get too excited, let's get a vague idea of what's happening in the current interation of this project. I'd like to understand how Cholesky Decomposition ties into this. Later, we'll see how to replace it.
 
 ### Cholesky Decomposition - The Concepts Behind It
 
@@ -298,7 +298,7 @@ Meanwhile, accoring to [CueMath](https://www.cuemath.com/algebra/triangular-matr
 * "A square matrix is said to be a lower triangular matrix if all the elements above its main diagonal are zero."
 * "A square matrix is said to be an upper triangular matrix if all the elements below the main diagonal are zero."
 
-Let's create a new file for testing to display the lower triangle. The Cholesky Decomposition / lower triangle in quantpy_youtube_example.py is found right here.
+Let's create a new file for testing to display the lower triangle. The Cholesky Decomposition part of quantpy_youtube_example.py is found right here.
 
 ```python
 L =  np.linalg.cholesky(covMatrix)
@@ -319,16 +319,16 @@ Understanding this might be more easy than I thought. A lower triangular matrix 
 
 We use the lower triangular matrix in the simulation for the following reasons:
 * **Factorization of the Covariance Matrix**: The covariance matrix captures how assets move together, but we can't use it to generate random returns. The lower triangular matrix is a factorization that, when multiplied by itself transposed, perfectly reproduces the original covariance matrix.
-* **Sequential Dependency Structure**: The lower triangular structure creates a specific pattern of dependencies. Each row only depends only on previous rows, which matches the way financial correlations often work in market models.
+* **Sequential Dependency Structure**: The lower triangular structure creates a specific pattern of dependencies. Each row only depends only on previous rows, which matches the way financial correlations often work in market models (allegedly).
 * **Mathematical Consistency**: The lower triangular matrix ensures that the resulting simulated returns have exactly the statistical properties defined by the covariance matrix.
 
-We can then use the lower triangular matrix to **transform independent random numbers into correlated random numbers than maintain the exact relationships defined in the covariance matrix**.
+We can then use the lower triangular matrix to **transform independent random numbers into correlated random numbers that maintain the exact relationships defined in the covariance matrix**.
 
-While I don't have an understanding of the math behind this, the concept of generating numbers randomly based on the correlations certainly makes sense. Diving into the formulas is likely a waste of time at this point, as I highly doubt we will be using a Cholesky Decomposition in the final calculations.
+While I don't have an understanding of the math behind this, the concept of generating numbers randomly based on the correlations certainly makes sense. This is definitely an important concept for me to discover. Diving into the formulas is a waste of time at this point, as we will not be using a Cholesky Decomposition in the final calculations.
 
-Let's move on to how the Cholesky Decomposition works. Then we can have a better understanding of how to replace it.
+Completely disregarding this fact, and for the sake of curiosity, let's mess around with the Cholesky Decomposition.
 
-#### Verifying PyQuant's Cholesky Decomposition
+#### Messing Around With / Testing the Cholesky Decomposition
 To reiterate from the [Cholesky Decomposition source](https://www.statlect.com/matrix-algebra/Cholesky-decomposition): 
 
 "A square matrix is said to have a Cholesky decomposition if it can be written as the **product of a lower triangular matrix and its transpose** (conjugate transpose in the complex case); the **lower triangular matrix is required to have strictly positive real entries on its main diagonal**."
@@ -363,7 +363,7 @@ for m in range(0, mc_sims):
     L_LT_product= np.matmul(L, L.T) # Product of L and its transpose
     is_valid_decomposition = np.allclose(L_LT_product, covMatrix) # Check if the product is equal to the covariance matrix
 ```
-This checks to see if the original covariance matrix equals the product of the Cholesky Decomposition and its transpose. The result returned a lovely ```True``` statement. As far as I can tell, the YouTube example was done correctly. Now let's understand the whole point of a Cholesky Decomposition so we can explore alternatives.
+This checks to see if the original covariance matrix equals the product of the Cholesky Decomposition and its transpose. The result returned a lovely ```True``` statement. As far as I can tell, the YouTube example was done correctly. Now it's time to take a quick look into how dependent these calculations are on the normal distribution.
 
 #### How Dependant on the Normal Distribution is a Cholesky Decomposition?
 
@@ -378,8 +378,22 @@ dailyReturns = meanM + np.inner(L, Z) # Inner product of the mean matrix and the
 portfolio_sims[:, m] = np.cumprod(np.inner(weights, dailyReturns.T)+1) * initialPortfolioValue # Cumulative product of the daily returns and the initial portfolio value
 ```
 
-Clearly, the calculations are completely reliant on Gaussian concepts. The entire Cholesky part is completely dependant on the randomly generates distribution assigned to ```Z```. The result of the simulation is founded on a basic Gaussian concept. This is all I need to know. Now it's time to take some of Taleb's advice.
+Clearly, the calculations are completely reliant on Gaussian concepts. The entire Cholesky part is fully dependant on the randomly generated distribution assigned to ```Z```. The result of the simulation is founded on a basic Gaussian concept. This is all I need to know. 
 
-# The Power Law and Talebs Lover Benoit Mandelbrot
+While this mini experiment was largely a waste of time, I at least have a better conceptual understanding. Now it's time to take some of Taleb's advice.
 
-As much as I want to get ahead of myself and start immediately applying Talebs ideas to a Monte Carlo simulation, let's get some foundational understanding first.
+# The Power Law and Talebs Lover - Benoit Mandelbrot
+
+As much as I want to get ahead of myself and start immediately applying Talebs ideas to a Monte Carlo simulation, let's get some very general conceptual understanding first.
+
+Taleb mentions his admiration of Benoit Mandelbrot frequently in "The Black Swan". It was Mandelbrot that introduced him to many fascinating concepts, the most notable for me being The Power Law. The Power Law at it basis (and after a quick Google search) is a relationship where a change in one quantity causes a proportional change in another quantity, **regardless of the initial size of those quantities**.
+
+Welcome to Extremistan! This is a place that'll give a warm welcome to Mr. Mandelbrot.
+
+I'll just start with Wikipedia for our introduction. Here are the biggest takaways:
+* **Statistical Incompleteness**: The Power Law model does not obey the paradigm of statistical completeness. 
+* **Scale Invariance** Scaling with the power law causes only a proportionate scaling of the function itself. 
+* **Lack of Well-Defined Average Value**: The mean is well-defined, but the variance is not, implying they are capable of **black swan** behavior.
+
+
+
