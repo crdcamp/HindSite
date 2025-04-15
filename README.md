@@ -1,10 +1,10 @@
-# The Purpose of This README.md
+# The Purpose of This README
 
-This README.md file is mostly for personal notes I can refer to while discovering how a Monte Carlo simulation works. It's more of a lesson log to hammer in what I've learned rather than being purely a guide for running this code. Big thanks to the book "Fooled by Randomness", by Nassim Nicholas Taleb, for inspiring this super interesting project. There are so many valuable concepts in this book that I feel this is the best way to fully digest them. I also might be stealing his rhetoric here and there, so I apologize if I occasionally sound pretentious.
+This README file is mostly for personal notes I can refer to while discovering how a Monte Carlo simulation works. It's more of a lesson log to hammer in what I've learned rather than being purely a guide for running this code. Big thanks to the book "Fooled by Randomness", by Nassim Nicholas Taleb, for inspiring this super interesting project. There are so many valuable concepts in this book that I feel this is the best way to fully digest them. I also might be stealing his rhetoric here and there, so I apologize if I occasionally sound pretentious.
 
 # The Purpose of This Project
 
-HindSite is meant to give me new insights into my Robinhood account and the trades I've made using a Monte Carlo simulation. I started this project in February of 2025, which has been a very uncertain time for U.S. markets. This uncertainty, in combination with Taleb's "Fooled by Randomness", has made me worry about the resilliance of my portfolio and my understanding of risk. I've taken a very organic approach to investing so far, and my intuition seems to be working for now. However, I've finally decided to blend some statistics into the mix, as I believe the best and most sustainable way to invest is through organic thought mixed with statistical analysis.
+HindSite is meant to give me new insights into my Robinhood account and the trades I've made using a Monte Carlo simulation. I started this project in February of 2025, which has been a very uncertain time for U.S. markets. This uncertainty, in combination with Taleb's "Fooled by Randomness", has made me worry about the resilliance of my portfolio and my understanding of risk. I've taken a very organic approach to investing so far while intuition seems to be working for now. However, I've finally decided to blend some statistics into the mix, as I believe the best and most sustainable way to invest is through organic thought mixed with statistical analysis. I'm almost certain my portfolio is highly susceptible to a financial shock, so now it's time to address that concern.
 
 # An Introduction To The Monte Carlo Simulation
 
@@ -12,11 +12,10 @@ We'll start with [this lecture](https://ocw.mit.edu/courses/6-0002-introduction-
 
 ## Inferential Statistics
 
-> **A Monte Carlo simulation is "a method of estimating the value of an unknown quantity using the principles of inferential statistics"**
->
-> - **Population**: A set of examples
-> - **Sample**: A proper subset of a population
-> - A random sample tends to exhibit the same properties as the population from which it is drawn.
+**A Monte Carlo simulation is "a method of estimating the value of an unknown quantity using the principles of inferential statistics"**
+* **Population**: A set of examples
+* **Sample**: A proper subset of a population
+* A random sample tends to exhibit the same properties as the population from which it is drawn.
 
 These are things we already know, but they are important to keep in mind.
 
@@ -26,9 +25,9 @@ Anyway, it's as simple as it gets: the more you flip the coin, the more the samp
 
 ### Confidence in our estimate depends on two things:
 
-> - Size of the sample
-> - Variance of the sample
-> - As the variance grows, we need larger samples to have the same degree of confidence
+* Size of the sample
+* Variance of the sample
+* As the variance grows, we need larger samples to have the same degree of confidence
 
 Again, all very simple and familiar concepts. No need for further elaboration.
 
@@ -40,17 +39,16 @@ Thankfully, this course is taught in Python. Unfortunately, it looks like I'm fi
 
 ### Object-Oriented Programming - Classes
 
-> - When you create a class, you're creating a blueprint for objects. Each object needs
->   its own separate copy of the data. That's what "self" helps with.
-> - In other words, "self" is simply a reference to "this specific object instance"
->   It's the way Python lets an object access its own data and methods.
-> - In summary, classes are used to calculate different data using the same calculations in a compartmentalized manner.
+* When you create a class, you're creating a blueprint for objects. Each object needs its own separate copy of the data. That's what "self" helps with.
+* In other words, "self" is simply a reference to "this specific object instance"
+* It's the way Python lets an object access its own data and methods.
+* In summary, classes are used to calculate different data using the same calculations in a compartmentalized manner.
 
 ### Object-Oriented Programming - Basic Structure
 
-> - You define methods inside a class
-> - You create an instance of that class
-> - You can then call those methods on the instance
+* You define methods inside a class
+* You create an instance of that class
+* You can then call those methods on the instance
 
 ### Guttag's Roulette Simulation
 
@@ -292,6 +290,8 @@ We'll start with [this resource](https://www.statlect.com/matrix-algebra/Cholesk
 Let's start with the completeley unfamiliar part; the **triangular matrix**.
 
 #### Triangular Matrices
+To begin with, a square matrix is a matrix that has an equal number of rows and columns. As for triangular matrices...
+
 Accoring to [CueMath](https://www.cuemath.com/algebra/triangular-matrix/):
 
 "A triangular matrix is a special kind of square matrix in the set of matrices. There are two types of triangular matrices: lower triangular matrix and upper triangular matrix."
@@ -304,7 +304,7 @@ Let's create a new file for testing to display the lower triangle. The Cholesky 
 L =  np.linalg.cholesky(covMatrix)
 ```
 
-After creating a new file called quantpy_youtube_example_testing.py, we'll edit the code to print this example from the above line.
+After creating a new file called quantpy_youtube_example_testing.py (just in case we gotta mess around with the code some more), we'll edit the code to print this example from the above line.
 
 ```
 [[ 0.01471784  0.          0.          0.          0.          0.        ]
@@ -315,4 +315,34 @@ After creating a new file called quantpy_youtube_example_testing.py, we'll edit 
  [ 0.00347986  0.00973975  0.00349588  0.00047145  0.00093471  0.00686941]]
 ```
 
-Understanding this might be more easy than I thought. A lower triangular matrix is when all elements above its main diagonal are zero, and this clearly fits the definition. Now that 
+Understanding this might be more easy than I thought. A lower triangular matrix is when all elements above its main diagonal are zero, and this clearly fits the definition. 
+
+We use the lower triangular matrix in the simulation for the following reasons:
+* **Factorization of the Covariance Matrix**: The covariance matrix captures how assets move together, but we can't use it to generate random returns. The lower triangular matrix is a factorization that, when multiplied by itself transposed, perfectly reproduces the original covariance matrix.
+* **Sequential Dependency Structure**: The lower triangular structure creates a specific pattern of dependencies. Each row only depends only on previous rows, which matches the way financial correlations often work in market models.
+* **Mathematical Consistency**: The lower triangular matrix ensures that the resulting simulated returns have exactly the statistical properties defined by the covariance matrix.
+
+We can then use the lower triangular matrix to **transform independent random numbers into correlated random numbers than maintain the exact relationships defined in the covariance matrix**.
+
+While I don't have an understanding of the math behind this, the concept of generating numbers randomly based on the correlations certainly makes sense. Diving into the formulas is likely a waste of time at this point, as I highly doubt we will be using a Cholesky Decomposition in the final calculations.
+
+Let's move on to how the Cholesky Decomposition works. Then we can have a better understanding of how to replace it.
+
+#### Understanding a Cholesky Decomposition
+To reiterate from the [Cholesky Decomposition source](https://www.statlect.com/matrix-algebra/Cholesky-decomposition): 
+
+"A square matrix is said to have a Cholesky decomposition if it can be written as the product of a lower triangular matrix and its transpose (conjugate transpose in the complex case); the lower triangular matrix is required to have strictly positive real entries on its main diagonal."
+
+This definition makes more sense now. Let's also revisit the example from earlier.
+
+
+```
+[[ 0.01471784  0.          0.          0.          0.          0.        ]
+ [ 0.00275857  0.01353353  0.          0.          0.          0.        ]
+ [ 0.00297616  0.01048601  0.00897381  0.          0.          0.        ]
+ [ 0.00752823  0.00615682  0.00060933  0.01426829  0.          0.        ]
+ [ 0.00022687  0.00177266 -0.0005684   0.00170653  0.00790305  0.        ]
+ [ 0.00347986  0.00973975  0.00349588  0.00047145  0.00093471  0.00686941]]
+```
+
+The [main diagonal](https://www.sciencedirect.com/topics/mathematics/diagonal-of-a-matrix#:~:text=The%20main%20diagonal%20of%20a,element%20to%20the%20lower%20right.) of a matrix refers to the elements where the row and column numbers are the same.
