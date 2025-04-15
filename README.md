@@ -279,3 +279,40 @@ I couldn't help but notice that the ```Z``` variable uses a normal distribution.
 * **Extremistan** - A domain where events have systematic effects. One event can affect more than one person, and the results can compound.
 * **Mediocristan** - A domain where the individual is affected without correlation to the collective.
 
+I'm a firm believer in Taleb's take on this. While I try to not blindly agree with everything he says, he is almost certainly correct about this central point in his book "The Black Swan". In the context of market/risk assessment, the normal distribution must die!
+
+Before I get too deep into this preconcieved bias, let's do some research into the Cholesky Decompostion and make some educated conclusions.
+
+### Cholesky Decomposition - The Math Behind It
+
+We'll start with [this resource](https://www.statlect.com/matrix-algebra/Cholesky-decomposition) to get an idea of what's happening here.
+
+"A square matrix is said to have a Cholesky decomposition if it can be written as the product of a lower triangular matrix and its transpose (conjugate transpose in the complex case); the lower triangular matrix is required to have strictly positive real entries on its main diagonal."
+
+Let's start with the completeley unfamiliar part; the **triangular matrix**.
+
+#### Triangular Matrices
+Accoring to [CueMath](https://www.cuemath.com/algebra/triangular-matrix/):
+
+"A triangular matrix is a special kind of square matrix in the set of matrices. There are two types of triangular matrices: lower triangular matrix and upper triangular matrix."
+* "A square matrix is said to be a lower triangular matrix if all the elements above its main diagonal are zero."
+* "A square matrix is said to be an upper triangular matrix if all the elements below the main diagonal are zero."
+
+Let's create a new file for testing to display the lower triangle. The Cholesky Decomposition / lower triangle in quantpy_youtube_example.py is found right here.
+
+```python
+L =  np.linalg.cholesky(covMatrix)
+```
+
+After creating a new file called quantpy_youtube_example_testing.py, we'll edit the code to print this example from the above line.
+
+```
+[[ 0.01471784  0.          0.          0.          0.          0.        ]
+ [ 0.00275857  0.01353353  0.          0.          0.          0.        ]
+ [ 0.00297616  0.01048601  0.00897381  0.          0.          0.        ]
+ [ 0.00752823  0.00615682  0.00060933  0.01426829  0.          0.        ]
+ [ 0.00022687  0.00177266 -0.0005684   0.00170653  0.00790305  0.        ]
+ [ 0.00347986  0.00973975  0.00349588  0.00047145  0.00093471  0.00686941]]
+```
+
+Understanding this might be more easy than I thought. A lower triangular matrix is when all elements above its main diagonal are zero, and this clearly fits the definition. Now that 
