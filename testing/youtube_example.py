@@ -35,5 +35,28 @@ print(f'Weights: {weights}') # Testing the weights
 # Now we can dive into the Monte Carlo simulation
 
 # Monte Carlo Method
-mc_sims = 100 # Number of simulations
+mc_sims = 100 # Number of simulations. We'll figure out what this means more precisely later
 T = 100 # Timeframe in days
+
+# Define some empty arrays that we're gonna store and retrieve information from 
+meanM = np.full(shape=(T, len(weights)), fill_value=meanReturns) # Mean matrix. Need to look into what .full does
+meanM = meanM.T # Transpose the mean matrix
+
+portfolio_sims = np.full(shape=(T, mc_sims), fill_value=0.0) # Array that we're storing the matrix in. Fill value = 0.0 to allow for float values
+
+initialPortfolioValue = 10000 # Initial portfolio value. This is the value of the portfolio at time 0
+
+for m in range(0, mc_sims):
+    # MC loops
+    # We use the Cholesky decomposition to determine the Lower Triangular matrix
+    # He mentions "normal distribution" in relation to this. I dont think Taleb would approve, BUT we're keeping it simple for now
+    Z =- np.random.normal(size=(T, len(weights))) # Generate a random normal distribution
+    L =  np.linalg.cholesky(covMatrix) # Cholesky decomposition. This finds the value for that "lower triangle"
+    dailyReturns = meanM + np.inner(L, Z) # Inner product of the mean matrix and the lower triangle
+    portfolio_sims[:, m] = np.cumprod(np.inner(weights, dailyReturns.T)+1) * initialPortfolioValue # Cumulative product of the daily returns and the initial portfolio value
+
+plt.plot(portfolio_sims)
+plt.ylabel('Portfolio Value ($)')
+plt.xlabel('Days')
+plt.title('Monte Carlo Simulation of Portfolio Value')
+plt.show()

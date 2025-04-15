@@ -214,4 +214,4 @@ weights /= np.sum(weights) # Normalize the weights to sum to 1 by dividing them 
 print(f'Weights: {weights}') # Testing the weights
 ```
 
-Now we can actually begin messing around with the Monte Carlo Simulation.
+Finally... we can actually start playing around with the Monte Carlo Simulation.
