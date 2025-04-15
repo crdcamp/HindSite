@@ -39,7 +39,7 @@ mc_sims = 100 # Number of simulations. We'll figure out what this means more pre
 T = 100 # Timeframe in days
 
 # Define some empty arrays that we're gonna store and retrieve information from 
-meanM = np.full(shape=(T, len(weights)), fill_value=meanReturns) # Mean matrix. Need to look into what .full does
+meanM = np.full(shape=(T, len(weights)), fill_value=meanReturns) # Mean matrix
 meanM = meanM.T # Transpose the mean matrix
 
 portfolio_sims = np.full(shape=(T, mc_sims), fill_value=0.0) # Array that we're storing the matrix in. Fill value = 0.0 to allow for float values

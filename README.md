@@ -170,7 +170,7 @@ So, if you look at the average of the 20 spins, it will be closer to the expecte
 
 **The more samples you take, the more likely you will regress to the mean**. The result isn't _evening out_, it is _regressing_ towards the statistically expected result. However, let's not marry ourselves to this idea before our understanding is fully grounded. Roulette is a game where the rules stay the same. The market is not and has way less static probabilities. People have lost their fortune on events they deemed far less likely than getting 10 reds in a row. Taleb hates it when people omit outliers for a reason.
 
-# Starting Simple - First Test of the Simulation
+# Starting Simple - First Monte Carlo Test
 
 Now it's time to see what we can do with a simple test. Thanks to [this video](https://www.youtube.com/watch?v=6-dhdMDiYWQ&t=9s) by QuantPy, we have a good place to start. We begin by simply finding the mean returns of some Austrailian stocks.
 
@@ -204,6 +204,11 @@ meanReturns, covMatrix = get_data(stocks, start_date, end_date)
 
 print(meanReturns)
 ```
+This (obviously) finds the stock mean returns. We begin by gathering the stock data (close prices), then calculating the daily percentage changes. The daily percent changes are then used to find the average daily return for each stock over a specific period.
+
+The covariance matrix (```covMatrix```) then captures how the returns of different stocks move in relation to each other. 
+
+As a review, a covariance matric captures the relationships between multiple variables. You can intepret a covariance matrix by understanding that diagonal elements represent the variance of each stock, while off-diagonal elements represent the covariance between stocks i and j. More on that later.
 
 ## Define weights for the portfolio
 Now we define the weights. In this case, we're just gonna use random numbers for these values to keep the simplicity.
@@ -214,4 +219,63 @@ weights /= np.sum(weights) # Normalize the weights to sum to 1 by dividing them 
 print(f'Weights: {weights}') # Testing the weights
 ```
 
-Finally... we can actually start playing around with the Monte Carlo Simulation.
+The random weights don't add up to 1, so we normalize by dividing the number of weights by their sum. Finally... we can actually start playing around with the Monte Carlo Simulation.
+
+## Setting Up the Simulation
+There's a lot to unpack here and a lot of learning to reflect on. We begin by determining the number of simulations and the time frame in days.
+```python
+# Monte Carlo Method
+mc_sims = 100 # Number of simulations. We'll figure out what this means more precisely later
+T = 100 # Timeframe in days
+```
+The number of simulations determines the following:
+* The precision and reliability of the output distributions. When you run more simulations, you reduce the impact of random variation or outliers.
+* With more simulations, you can more precisely estimate the likelihood of different outcomes, **especially rare events** (Taleb liked that).
+* More simulations typically narrow confidence intervals and provide better estimates of potential outcomes.
+
+After we determine the number of simulations and the timeframe, we define empty arrays to store and retrieve information. 
+
+```python
+# Define some empty arrays that we're gonna store and retrieve information from 
+meanM = np.full(shape=(T, len(weights)), fill_value=meanReturns) # Mean matrix. Need to look into what .full does
+meanM = meanM.T # Transpose the mean matrix
+```
+The variable ```meanM``` is the mean matrix. This is essentially duplicating the mean returns 100 times (once for each day in the timeframe). The np.full() function creates an array of the specified shape and fills it with the value provided.
+
+```shape=(T, len(weights))``` is specifying that you want to create a 2D array with 100 T rows and 6 weight columns. One column for each stock.
+
+The transposition ensures that when you perform this calculation, the dimensions match properly for matrix operations. When you transpose the matrix with ```meanM = meanM.T```, you are flipping a matrix over its diagonal and switching its rows and columns. Keep in mind that ```.T``` is a property, not a method, that returns the transposed version of the matrix. The diagonal remains in the same position, but all other elements change their position.
+
+Before the transposition, ```meanM``` is a matric with shape (100, 6). After, it becomes (6, 100).
+
+This aligns everything correctly in order for the calculation to work properly.
+
+```python
+portfolio_sims = np.full(shape=(T, mc_sims), fill_value=0.0) # Array that we're storing the matrix in. Fill value = 0.0 to allow for float values
+
+initialPortfolioValue = 10000 # Initial portfolio value. This is the value of the portfolio at time 0
+```
+```python
+for m in range(0, mc_sims):
+    # MC loops
+    Z =- np.random.normal(size=(T, len(weights))) # Generate a random normal distribution
+    L =  np.linalg.cholesky(covMatrix) # Cholesky decomposition. This finds the value for that "lower triangle"
+    dailyReturns = meanM + np.inner(L, Z) # Inner product of the mean matrix and the lower triangle
+    portfolio_sims[:, m] = np.cumprod(np.inner(weights, dailyReturns.T)+1) * initialPortfolioValue # Cumulative product of the daily returns and the initial portfolio value
+
+plt.plot(portfolio_sims)
+plt.ylabel('Portfolio Value ($)')
+plt.xlabel('Days')
+plt.title('Monte Carlo Simulation of Portfolio Value')
+plt.show()
+```
+
+We use the **Cholesky decomposition** ```L``` to determine the Lower Triangular matrix. 
+
+## Cholesky Decomposition - What Is It and Would Taleb Approve?
+
+I couldn't help but notice that the ```Z``` variable uses a normal distribution. In the context of the stock market, Taleb HATES normal distributions. This is because, according to him, a normal distribution cannot be used on things like the stock market. He states that the market belongs to "Extremistan"; a domain where the cumulative magnitude of an outlier scales completely differently than those of "Mediocristan". Mediocristan is a domain where variables are well-behaved, follow normal distributions, and extreme outcomes are almost impossible.
+
+* **Extremistan** - A domain where events have systematic effects. One event can affect more than one person, and the results can compound.
+* **Mediocristan** - A domain where the individual is affected without correlation to the collective.
+
