@@ -365,6 +365,21 @@ for m in range(0, mc_sims):
 ```
 This checks to see if the original covariance matrix equals the product of the Cholesky Decomposition and its transpose. The result returned a lovely ```True``` statement. As far as I can tell, the YouTube example was done correctly. Now let's understand the whole point of a Cholesky Decomposition so we can explore alternatives.
 
-#### Understanding The Cholesky Decomposition
+#### How Dependant on the Normal Distribution is a Cholesky Decomposition?
 
+As we've already discovered, the Cholesky Decomposition is used for simulating systems with multiple correlated variables. That's interesting and all, but why does it use the dreaded normal distibution? These Gaussian concepts are not welcome in my analysis! Do you hear me, Taleb!?
 
+Let's take another look at when the code creates a random normal distribution, applies the Cholesky Decomposition, and then does the rest of the magic.
+
+```python
+Z = np.random.normal(size=(T, len(weights))) # Generate a random normal distribution
+L =  np.linalg.cholesky(covMatrix) # Cholesky decomposition. This finds the value for that "lower triangle"
+dailyReturns = meanM + np.inner(L, Z) # Inner product of the mean matrix and the lower triangle
+portfolio_sims[:, m] = np.cumprod(np.inner(weights, dailyReturns.T)+1) * initialPortfolioValue # Cumulative product of the daily returns and the initial portfolio value
+```
+
+Clearly, the calculations are completely reliant on Gaussian concepts. The entire Cholesky part is completely dependant on the randomly generates distribution assigned to ```Z```. The result of the simulation is founded on a basic Gaussian concept. This is all I need to know. Now it's time to take some of Taleb's advice.
+
+# The Power Law and Talebs Lover Benoit Mandelbrot
+
+As much as I want to get ahead of myself and start immediately applying Talebs ideas to a Monte Carlo simulation, let's get some foundational understanding first.

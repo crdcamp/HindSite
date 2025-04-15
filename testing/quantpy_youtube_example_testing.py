@@ -62,4 +62,4 @@ for m in range(0, mc_sims):
 
 print(f'Cholesky Decompostition: {L}\n') # Display Cholesky Decomposition matrix for note taking
 print(f'Product of Cholesky Decomposition and its Transpose: {L_LT_product}') # Display product of L and its transpose for note taking
-print(f'Is the Cholesky Decomposition valid? {is_valid_decomposition}') # Result = True
+print(f'Is the Cholesky Decomposition valid? {is_valid_decomposition}') 
